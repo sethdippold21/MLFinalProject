@@ -1,7 +1,7 @@
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import svm, datasets
+
 
 def make_meshgrid(x, y, h=.02):
     """Create a mesh of points to plot in
@@ -39,13 +39,16 @@ def plot_contours(ax, clf, xx, yy, **params):
     out = ax.contourf(xx, yy, Z, **params)
     return out
 
-data = pd.read_csv('Pokemon.csv')
-d = np.asmatrix(data)
-y = d[:,2]
-# X = d[:,5:11]
-X = d[:,5:7]
 
-C = 1.0
+# import some data to play with
+iris = datasets.load_iris()
+# Take the first two features. We could avoid this by using a two-dim dataset
+X = iris.data[:, :2]
+y = iris.target
+
+# we create an instance of SVM and fit out data. We do not scale our
+# data since we want to plot the support vectors
+C = 1.0  # SVM regularization parameter
 models = (svm.SVC(kernel='linear', C=C),
           svm.LinearSVC(C=C),
           svm.SVC(kernel='rbf', gamma=0.7, C=C),
@@ -71,8 +74,8 @@ for clf, title, ax in zip(models, titles, sub.flatten()):
     ax.scatter(X0, X1, c=y, cmap=plt.cm.coolwarm, s=20, edgecolors='k')
     ax.set_xlim(xx.min(), xx.max())
     ax.set_ylim(yy.min(), yy.max())
-    ax.set_xlabel('HP')
-    ax.set_ylabel('Attack')
+    ax.set_xlabel('Sepal length')
+    ax.set_ylabel('Sepal width')
     ax.set_xticks(())
     ax.set_yticks(())
     ax.set_title(title)
