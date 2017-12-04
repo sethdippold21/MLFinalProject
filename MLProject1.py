@@ -1,15 +1,12 @@
-# import csv
+import pandas as pd
+import numpy as np
+from sklearn import svm
+# import graphviz
 
-# with open('Pokemon.csv', 'r') as f:
-#   reader = csv.reader(f)
-#   your_list = list(reader)
+df = pd.read_csv('Pokemon.csv')
+d = np.asmatrix(df)
+y = d[:,2]
+x = d[:,5:11]
 
-# print(your_list)
-
-# import numpy
-
-# numpy.loadtxt(open("Pokemon.csv", "rb"), delimiter=",", skiprows=1)
-
-import pandas as pd 
-df = pd.read_csv("Pokemon_Set1.csv")
-print(df)
+print(x)
+print(y)
