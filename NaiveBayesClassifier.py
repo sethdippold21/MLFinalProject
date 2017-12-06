@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 from sklearn import naive_bayes
 import graphviz
-from sklearn.datasets import load_iris
 
 # read in the dataset
 df = pd.read_csv('Pokemon.csv')
