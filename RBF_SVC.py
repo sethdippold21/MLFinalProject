@@ -26,7 +26,7 @@ for j in range(100):
     trainx,validx = x[:4*numInPart,:],x[4*numInPart:,:]
     trainy,validy = y[:4*numInPart,:],y[4*numInPart:,:]
 
-    # Make the Decision Tree
+    # Classify with SVM based on the RBF kernel
     clf = svm.SVC(kernel='rbf', gamma=0.7, C=1.0)
     clf.fit(trainx,trainy)
 

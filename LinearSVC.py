@@ -26,7 +26,7 @@ for j in range(100):
     trainx,validx = x[:4*numInPart,:],x[4*numInPart:,:]
     trainy,validy = y[:4*numInPart,:],y[4*numInPart:,:]
 
-    # Make the Decision Tree
+    # Classify with SVM based on Linear kernel
     clf = svm.LinearSVC(random_state=0)
     clf.fit(trainx,trainy)
 
