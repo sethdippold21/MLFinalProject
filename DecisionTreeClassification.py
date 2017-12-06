@@ -11,8 +11,9 @@ y = np.array(d[:,2])
 x = d[:,5:11]
 size = x.shape[0]
 
-average = 0
-maximum = 0
+averageTrainingAccuracy = 0
+averageValidationAccuracy = 0
+maximumValidationAccuracy = 0
 for j in range(100):
     # Split the data into a training and testing set
     shuffled_x = np.empty(x.shape, dtype=x.dtype)
@@ -30,16 +31,24 @@ for j in range(100):
     # Make the Decision Tree
     clf = tree.DecisionTreeClassifier()
     clf.fit(trainx,trainy)
+
+    correct = 0
+    for i in range(len(trainy)):
+        if trainy[i] == clf.predict([trainx[i,:]]):
+            correct = correct + 1
+    averageTrainingAccuracy = averageTrainingAccuracy + (correct/len(trainy))
+
     correct = 0
     for i in range(len(validy)):
         if validy[i] == clf.predict([validx[i,:]]):
                 correct = correct + 1
+    averageValidationAccuracy = averageValidationAccuracy + (correct/len(validy))
+    if (correct/len(validy) > maximumValidationAccuracy):
+        maximumValidationAccuracy = correct/len(validy)
 
-    average = average + (correct/len(validy))
-    if (correct/len(validy) > maximum):
-        maximum = correct/len(validy)
-print('Average:', average, 'percent')
-print('Maximum:', maximum*100, 'percent')
+print('Average Training Accuracy:', averageTrainingAccuracy, 'percent')
+print('Average Validation Accuracy:', averageValidationAccuracy, 'percent')
+print('Maximum:', maximumValidationAccuracy*100, 'percent')
 
 # Print the decision tree
 data_names = ['HP','Attack','Defense','Sp. Attack','Sp. Defense','Speed']
