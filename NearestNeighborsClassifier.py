@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sklearn import tree
+from sklearn import neighbors
 import graphviz
 from sklearn.datasets import load_iris
 
@@ -14,7 +14,7 @@ size = x.shape[0]
 average = 0
 maximum = 0
 for j in range(100):
-    # Split the data into a training and testing set
+    # Split the data into training and test sets
     shuffled_x = np.empty(x.shape, dtype=x.dtype)
     shuffled_y = np.empty(y.shape, dtype=y.dtype)
     permutation = np.random.permutation(size)
@@ -27,27 +27,16 @@ for j in range(100):
     trainx,validx = x[:4*numInPart,:],x[4*numInPart:,:]
     trainy,validy = y[:4*numInPart,:],y[4*numInPart:,:]
 
-    # Make the Decision Tree
-    clf = tree.DecisionTreeClassifier()
-    clf.fit(trainx,trainy)
+    # Train the Nearest Neighbors Classifier
+    nn = neighbors.KNeighborsClassifier()
+    nn.fit(trainx,trainy.ravel())
     correct = 0
     for i in range(len(validy)):
-        if validy[i] == clf.predict([validx[i,:]]):
+        if validy[i] == nn.predict([validx[i,:]]):
                 correct = correct + 1
 
-    average = average + (correct/len(validy))
+    average = average + correct/len(validy)
     if (correct/len(validy) > maximum):
         maximum = correct/len(validy)
 print('Average:', average, 'percent')
 print('Maximum:', maximum*100, 'percent')
-
-# Print the decision tree
-data_names = ['HP','Attack','Defense','Sp. Attack','Sp. Defense','Speed']
-
-dot_data = tree.export_graphviz(clf, out_file=None,
-                                feature_names=data_names,
-                                class_names=np.unique(y),
-                                filled=True, rounded=True,
-                                special_characters=True)
-graph = graphviz.Source(dot_data) 
-graph.render("DecisionTreeClassifier")
